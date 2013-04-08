@@ -1,0 +1,99 @@
+adhocracy Changelog
+===================
+
+1.2beta2dev
+-----------
+- Replace RabbitMQ/amqp with redis/rq. This means that you have to
+  provide a working redis instance if you want to use asyncronous
+  jobs (highly recommended in production).
+  The background process that processes the jobs is renamed from
+  'background' to 'worker'. You can call it with
+  `bin/paster --plugin=adhocracy worker -c etc/adhocracy.ini`
+
+  Configuration changes:
+
+  * dropped: adhocracy.amqp.* settings are not required anymore.
+  * new: adhocracy.redis.host: An IP address redis can bind to 
+    (not a hostname!)
+  * new: adhocracy.redis.port: The port redis will open
+  * new: adhocracy.redis.queue: The queue name
+
+- Added facet search to the instance listing. The listing is based on solr now, 
+  please reindex. [joka]
+
+- Instances can have badges now. To create instance badges use the 
+  site-administration -> badges form. To assign badges use the 
+  instance listing. [joka]]
+
+- New config option "adhocracy.registration.email.blacklist" that
+  accepts a whitspace seperated list of email address and
+  blocks registrations with those. Dots will be stripped before
+  the test (to catch gmail addresses where dots are ignored by gmail).
+  [csenger]
+
+- New config option "adhocracy.listings.instance.sorting" that makes
+  the sort options for the instance listing configurable. This
+  possible values are: OLDEST, NEWEST, ACTIVITY and ALPHA. [csenger]
+
+- Permission change: When we test the 'norm.create' permission 
+  (permission to create Norms/Topics/Themen we do no longer
+  restrict it to users who also have 'instance.admin'. The main
+  permission we check now is 'page.create'.
+
+  Please check the permission 'page.create' in your permission 
+  settings (<base_url>/admin -> Permissions). [csenger]
+- Give the users the option to permanently activate the twitter, 
+  facebook or google+ buttons. Save the setting in a wildcard 
+  subdomain cookie so it is valid across all instances.
+
+  This requires a updated js.socialshareprivacy to work with
+  our auth cookie. [csenger]
+- Add the possibility to overwrite templates in <adhocracy.site>/templates 
+  directory (like it's possible for static resources and static pages already.
+  New templates there need a server restart to be picked up.
+  [csenger]
+- Deliver (almost) all resources with fanstatic. [csenger] 
+- Delgateables can have category badgets. [joka]
+- Instances can have badgets, they are only valid inside that instance. [joka]
+- Added option to set the smtp port. [joka]
+
+1.2a4
+-----
+
+- Tooltips use jquery tools now. [joka]
+- Open helper link, login and register form with overlay. [joka]
+- Recaptcha support (disabled by default). [joka]
+- Proposals can have badgets #263. [joka]
+
+
+1.2a3 
+-----
+
+1.2a2 
+------
+
+1.2a1
+-----
+
+- Users can have badgets #214. [carsten]
+- Proposal listing with natural sort #212. [joka]
+
+1.1 (2010-12-05)
+----------------
+
+- Join "Goal" and "Implementation" pages on proposals.
+- Migrate from whoosh to solr.
+- Allow single-instance mode of operation.
+- Allow per-instance deactivation of norms. 
+- Remove wiki from system.
+- Change from cron-initiated regular background processing.
+  to continuous background queue polling process.
+- Add INSTALL.txt and CHANGES.txt.
+- Change from BSD license to AGPL-3.
+- Update to SQLAlchemy 0.6.
+- Many smaller bug fixes.
+
+1.0 (2010-07-24)
+----------------
+
+- Initial stable release.
